@@ -67,8 +67,6 @@ def Today(session):
     reading1FullText = CleanText(readingsjson['liturgicalDay']['reading1FullText'])
     reading2Title = readingsjson['liturgicalDay']['reading2Title'].strip()
     reading2FullText = CleanText(readingsjson['liturgicalDay']['reading2FullText'])
-    reading3Title = readingsjson['liturgicalDay']['reading3Title'].strip()
-    reading3FullText = CleanText(readingsjson['liturgicalDay']['reading3FullText'])
     thought = DailyThought(session)
 
     msg = f"""{formatCalendarDate}
@@ -79,12 +77,6 @@ def Today(session):
         \n{reading1FullText}
         \n\n☦ READING 2: {reading2Title} ☦
         \n{reading2FullText}\n"""
-
-    #if (len(reading3Title)) != 0: # there is never a reading 3 so why bother
-    #    msg = msg+f"""
-    #        \n☦ READING 3: {reading3Title} ☦
-    #        \n{reading3FullText}
-    #        \n"""
 
     return msg
 
@@ -97,7 +89,5 @@ def CleanText(text):
 
 def WriteMsg(msg):
     print(msg) # now outputs to STDOUT - file io handled by crontab exec script
-    #with open('/home/jason.heald/personal-not-work-related/antiochian/motd.txt','w') as f:
-    #    f.write(msg)
 
 main()
