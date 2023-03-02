@@ -67,6 +67,8 @@ def Today(session):
     reading1FullText = CleanText(readingsjson['liturgicalDay']['reading1FullText'])
     reading2Title = readingsjson['liturgicalDay']['reading2Title'].strip()
     reading2FullText = CleanText(readingsjson['liturgicalDay']['reading2FullText'])
+    reading3Title = readingsjson['liturgicalDay']['reading3Title'].strip()
+    reading3FullText = CleanText(readingsjson['liturgicalDay']['reading3FullText'])
     thought = DailyThought(session)
 
     msg = f"""{formatCalendarDate}
@@ -78,6 +80,11 @@ def Today(session):
         \n\n☦ READING 2: {reading2Title} ☦
         \n{reading2FullText}\n"""
 
+    if reading3Title != "":
+        msg = msg+f"""
+            \n☦ READING 3: {reading3Title} ☦
+            \n{reading3FullText}\n\n"""
+
     return msg
 
 def DailyThought(session):
@@ -88,6 +95,6 @@ def CleanText(text):
     return text.strip().replace("&quot;","\"").replace("&#39;","\'").replace("&#58;",":")
 
 def WriteMsg(msg):
-    print(msg) # now outputs to STDOUT - file io handled by crontab exec script
+    print(msg)
 
 main()
