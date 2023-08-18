@@ -59,9 +59,13 @@ def Today(session):
     readingsjson = json.loads(session.get('https://antiochian.org/api/antiochian/LiturgicalDay/'+str(response['itemId'])).content)
 
     calendarDateLong = readingsjson['liturgicalDay']['calendarDateLong'].strip()
+    # encapsulate calendarDateLong inside of a box made from '+'
     formatCalendarDate = "+++"+"+"*len(calendarDateLong)+"+++\n++ "+calendarDateLong+" ++\n+++"+"+"*len(calendarDateLong)+"+++"
 
     fastDesignation = readingsjson['liturgicalDay']['fastDesignation'].strip()
+    # NOTE: I am unsure of how to further parse the feasts. They are
+    # comma-delimited, but sometimes contain commas inside. Some feasts are for
+    # "St. X, Bishop of Foo", others for "A, B, & C the martyrs of Bar"
     feastDayDescription = readingsjson['liturgicalDay']['feastDayDescription'].strip()
     reading1Title = readingsjson['liturgicalDay']['reading1Title'].strip()
     reading1FullText = CleanText(readingsjson['liturgicalDay']['reading1FullText'])
@@ -71,6 +75,7 @@ def Today(session):
     reading3FullText = CleanText(readingsjson['liturgicalDay']['reading3FullText'])
     thought = DailyThought(session)
 
+    # msg generation should probably be handled by its own function...
     msg = f"""{formatCalendarDate}
         \n☦ TODAY'S FAST: {fastDesignation} ☦
         \n☦ TODAY'S FEASTS ☦ \n{feastDayDescription}
@@ -94,6 +99,7 @@ def DailyThought(session):
 def CleanText(text):
     return text.strip().replace("&quot;","\"").replace("&#39;","\'").replace("&#58;",":")
 
+# formerly this wrote to a file, but this is easier
 def WriteMsg(msg):
     print(msg)
 
